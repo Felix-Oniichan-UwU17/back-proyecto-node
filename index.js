@@ -13,10 +13,21 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 //conexion a la Base de Datos 
+const uri = `mongodb+srv://${process.env.USUARIO}:${process.env.PASWORD}@cluster0.xtnpv4r.mongodb.net/${process.env.DBNAME}`
+mongoose.connect(uri, {
+    useNewUrlParser: true
+}).then(() =>{
+    console.log('Conectado a BD')
+}).catch(e => {
+    console.log('error', e)
+})
 
 //importar Rutas 
+const authRoutes = require('./routes/auth')
 
 //ruta del Middleware
+app.use('/api/user', authRoutes)
+
 app.get('/', (req, res) => {
     res.json({
         estado: true,
